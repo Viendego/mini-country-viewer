@@ -7,11 +7,17 @@ import './index.css'
 export default function App() {
   const [searchTerm, setSearchTerm] = useState('')
 
-  // Filter countries based on search term
+  // Filter countries based on search term (match name, region, or capital)
   const filteredCountries = useMemo(() => {
-    return countriesData.filter((country) =>
-      country.name.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+    const q = (searchTerm || '').trim().toLowerCase()
+    if (!q) return countriesData
+
+    return countriesData.filter((country) => {
+      const name = (country.name || '').toLowerCase()
+      const region = (country.region || '').toLowerCase()
+      const capital = (country.capital || '').toLowerCase()
+      return name.includes(q) || region.includes(q) || capital.includes(q)
+    })
   }, [searchTerm])
 
   return (

@@ -1,11 +1,18 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export default function SearchBar({ searchTerm, onSearchChange }) {
   const inputRef = useRef(null)
+  const [isFocused, setIsFocused] = useState(false)
 
   useEffect(() => {
     inputRef.current?.focus()
   }, [])
+
+  const suggestions = [
+    { label: 'Search by Country', example: 'e.g., "Armenia"' },
+    { label: 'Search by Capital', example: 'e.g., "Vienna"' },
+    { label: 'Search by Region', example: 'e.g., "Asia"' },
+  ]
 
   return (
     <div className="relative">
@@ -30,10 +37,25 @@ export default function SearchBar({ searchTerm, onSearchChange }) {
         placeholder="Search countries..."
         value={searchTerm}
         onChange={(e) => onSearchChange(e.target.value)}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setTimeout(() => setIsFocused(false), 200)}
         className="w-full pl-10 sm:pl-12 pr-4 py-3 sm:py-4 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base placeholder-gray-400"
         aria-label="Search countries"
         title="Search by country name, region, or capital (e.g., 'Asia', 'Argentina', 'Tirana')"
       />
+      {isFocused && !searchTerm && (
+        <div className="absolute top-full mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+          {suggestions.map((suggestion, idx) => (
+            <div
+              key={idx}
+              className="px-4 py-3 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 cursor-default"
+            >
+              <p className="text-sm font-medium text-gray-700">{suggestion.label}</p>
+              <p className="text-xs text-gray-500">{suggestion.example}</p>
+            </div>
+          ))}
+        </div>
+      )}
       {searchTerm && (
         <button
           onClick={() => onSearchChange('')}

@@ -9,10 +9,15 @@ export default function SearchBar({ searchTerm, onSearchChange }) {
   }, [])
 
   const suggestions = [
-    { label: 'Search by Country', example: 'e.g., "Armenia"' },
-    { label: 'Search by Capital', example: 'e.g., "Vienna"' },
-    { label: 'Search by Region', example: 'e.g., "Asia"' },
+    { label: 'Search by Country', example: 'Armenia', displayExample: 'e.g., "Armenia"' },
+    { label: 'Search by Capital', example: 'Vienna', displayExample: 'e.g., "Vienna"' },
+    { label: 'Search by Region', example: 'Asia', displayExample: 'e.g., "Asia"' },
   ]
+
+  const handleSuggestionClick = (example) => {
+    onSearchChange(example)
+    setIsFocused(false)
+  }
 
   return (
     <div className="relative">
@@ -48,10 +53,11 @@ export default function SearchBar({ searchTerm, onSearchChange }) {
           {suggestions.map((suggestion, idx) => (
             <div
               key={idx}
-              className="px-4 py-3 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 cursor-default"
+              onClick={() => handleSuggestionClick(suggestion.example)}
+              className="px-4 py-3 border-b border-gray-100 last:border-b-0 hover:bg-blue-50 cursor-pointer transition-colors"
             >
               <p className="text-sm font-medium text-gray-700">{suggestion.label}</p>
-              <p className="text-xs text-gray-500">{suggestion.example}</p>
+              <p className="text-xs text-gray-500">{suggestion.displayExample}</p>
             </div>
           ))}
         </div>

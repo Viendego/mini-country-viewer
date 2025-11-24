@@ -1,10 +1,21 @@
 import { useState } from 'react'
 
-export default function CountryCard({ country }) {
-  const [isExpanded, setIsExpanded] = useState(false)
+export default function CountryCard({ country, isExpanded: isExpandedProp, onToggle: onToggleProp }) {
+  // Support both controlled (via props) and uncontrolled (internal) usage.
+  const [isExpandedInternal, setIsExpandedInternal] = useState(false)
+  const isControlled = typeof isExpandedProp === 'boolean' && typeof onToggleProp === 'function'
+  const isExpanded = isControlled ? isExpandedProp : isExpandedInternal
 
   const toggleExpanded = () => {
-    setIsExpanded(!isExpanded)
+    if (isControlled) onToggleProp()
+    else {
+      setIsExpandedInternal((s) => {
+        const next = !s
+        // eslint-disable-next-line no-console
+        console.log('internal toggle:', country.code, next)
+        return next
+      })
+    }
   }
 
   const handleKeyDown = (e) => {
@@ -19,15 +30,19 @@ export default function CountryCard({ country }) {
   }
 
   return (
-    <div
-      role="button"
-      tabIndex={0}
-      onClick={toggleExpanded}
-      onKeyDown={handleKeyDown}
-      className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-    >
+    <div className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden focus:outline-none">
       {/* Card Header - Always Visible */}
-      <div className="p-4 sm:p-5 flex items-center gap-3 sm:gap-4 border-b border-gray-100">
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={(e) => {
+          // eslint-disable-next-line no-console
+          console.log('header click', country.code)
+          toggleExpanded()
+        }}
+        onKeyDown={handleKeyDown}
+        className="p-4 sm:p-5 flex items-center gap-3 sm:gap-4 border-b border-gray-100 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+      >
         <img
           src={country.flag}
           alt={`${country.name} flag`}
@@ -42,6 +57,13 @@ export default function CountryCard({ country }) {
           </p>
         </div>
         <button
+          type="button"
+          onClick={(e) => {
+            // eslint-disable-next-line no-console
+            console.log('button click', country.code)
+            e.stopPropagation()
+            toggleExpanded()
+          }}
           className="flex-shrink-0 text-gray-400 hover:text-gray-600 transition-colors"
           aria-label={isExpanded ? 'Collapse details' : 'Expand details'}
         >

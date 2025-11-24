@@ -6,6 +6,7 @@ import './index.css'
 
 export default function App() {
   const [searchTerm, setSearchTerm] = useState('')
+  const [expandedSet, setExpandedSet] = useState(() => new Set())
 
   // Filter countries based on search term (match name, region, or capital)
   const filteredCountries = useMemo(() => {
@@ -49,7 +50,27 @@ export default function App() {
         {filteredCountries.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {filteredCountries.map((country) => (
-              <CountryCard key={country.code} country={country} />
+              <CountryCard
+                key={country.code}
+                country={country}
+                isExpanded={expandedSet.has(country.code)}
+                onToggle={() => {
+                  // eslint-disable-next-line no-console
+                  console.log('onToggle called for', country.code)
+                  // eslint-disable-next-line no-console
+                  console.trace()
+                  setExpandedSet((prev) => {
+                    const next = new Set(prev)
+                    const wasExpanded = next.has(country.code)
+                    if (wasExpanded) next.delete(country.code)
+                    else next.add(country.code)
+                    // Trace toggle for debugging
+                    // eslint-disable-next-line no-console
+                    console.log('toggle:', country.code, !wasExpanded)
+                    return next
+                  })
+                }}
+              />
             ))}
           </div>
         ) : (

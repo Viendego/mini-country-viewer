@@ -4,7 +4,6 @@ export default function SearchBar({ searchTerm, onSearchChange }) {
   const inputRef = useRef(null)
 
   useEffect(() => {
-    // Focus search input on mount for better UX
     inputRef.current?.focus()
   }, [])
 
@@ -33,6 +32,7 @@ export default function SearchBar({ searchTerm, onSearchChange }) {
         onChange={(e) => onSearchChange(e.target.value)}
         className="w-full pl-10 sm:pl-12 pr-4 py-3 sm:py-4 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base placeholder-gray-400"
         aria-label="Search countries"
+        title="Search by country name, region, or capital (e.g., 'Asia', 'Argentina', 'Tirana')"
       />
       {searchTerm && (
         <button

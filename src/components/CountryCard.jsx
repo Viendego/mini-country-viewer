@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
 export default function CountryCard({ country, isExpanded: isExpandedProp, onToggle: onToggleProp }) {
-  // Support both controlled (via props) and uncontrolled (internal) usage.
   const [isExpandedInternal, setIsExpandedInternal] = useState(false)
   const isControlled = typeof isExpandedProp === 'boolean' && typeof onToggleProp === 'function'
   const isExpanded = isControlled ? isExpandedProp : isExpandedInternal
@@ -11,7 +10,6 @@ export default function CountryCard({ country, isExpanded: isExpandedProp, onTog
     else {
       setIsExpandedInternal((s) => {
         const next = !s
-        // eslint-disable-next-line no-console
         console.log('internal toggle:', country.code, next)
         return next
       })
@@ -31,12 +29,10 @@ export default function CountryCard({ country, isExpanded: isExpandedProp, onTog
 
   return (
     <div className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden focus:outline-none">
-      {/* Card Header - Always Visible */}
       <div
         role="button"
         tabIndex={0}
         onClick={(e) => {
-          // eslint-disable-next-line no-console
           console.log('header click', country.code)
           toggleExpanded()
         }}
@@ -59,11 +55,12 @@ export default function CountryCard({ country, isExpanded: isExpandedProp, onTog
         <button
           type="button"
           onClick={(e) => {
-            // eslint-disable-next-line no-console
+           
             console.log('button click', country.code)
-            e.stopPropagation()
+            
             toggleExpanded()
-          }}
+            e.stopPropagation()
+          }} 
           className="flex-shrink-0 text-gray-400 hover:text-gray-600 transition-colors"
           aria-label={isExpanded ? 'Collapse details' : 'Expand details'}
         >

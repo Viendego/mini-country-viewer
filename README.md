@@ -20,13 +20,13 @@ npm run lint      # Run ESLint
 npx eslint . --fix  # Auto-fix linting issues
 ```
 
-## Design Decisions
+## Design Decisions (Minimalist)
 
 **Visual Polish**: Inspired by iOS and ChronicleHQ minimalism—clean card-based layout with subtle shadows and smooth transitions. Focus on whitespace and typography hierarchy.
 
 **Keyboard-First A11y**: Semantic HTML with ARIA labels. Cards are keyboard-operable (Tab to focus, Space/Enter to expand). Search input auto-focuses on mount.
 
-**Responsive**: Tailwind's responsive classes ensure 375px mobile view works perfectly with scaled typography, padding, and grid columns (1 mobile → 3 desktop).
+**Responsiveness**: Tailwind's responsive classes ensure 375px mobile view works perfectly with scaled typography, padding, and grid columns (1 mobile → 3 desktop).
 
 **Performance**: React hooks with `useMemo` for efficient filtering; lazy imports; CSS modules via Tailwind for minimal bundle.
 

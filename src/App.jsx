@@ -30,7 +30,7 @@ export default function App() {
             Countries
           </h1>
           <p className="text-gray-600 text-sm sm:text-base">
-            Explore countries, capitals, and populations
+            Explore countries, capitals, and populations!
           </p>
         </div>
 
@@ -54,18 +54,14 @@ export default function App() {
                 key={country.code}
                 country={country}
                 isExpanded={expandedSet.has(country.code)}
-                onToggle={() => {
-                  // eslint-disable-next-line no-console
+                onToggle={() => {               
                   console.log('onToggle called for', country.code)
-                  // eslint-disable-next-line no-console
                   console.trace()
                   setExpandedSet((prev) => {
                     const next = new Set(prev)
                     const wasExpanded = next.has(country.code)
                     if (wasExpanded) next.delete(country.code)
                     else next.add(country.code)
-                    // Trace toggle for debugging
-                    // eslint-disable-next-line no-console
                     console.log('toggle:', country.code, !wasExpanded)
                     return next
                   })
@@ -85,7 +81,7 @@ export default function App() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={1.5}
-                d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                
               />
             </svg>
             <p className="text-gray-600 text-base sm:text-lg font-medium mb-2">

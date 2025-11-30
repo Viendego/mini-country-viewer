@@ -25,9 +25,10 @@ export default function App() {
   const [showPreviewDashboard, setShowPreviewDashboard] = useState(false)
   const [theme, setTheme] = useState(() => {
     try {
-      return localStorage.getItem('theme') || 'light'
+      // Default to dark mode on first visit unless a preference is stored
+      return localStorage.getItem('theme') || 'dark'
     } catch (e) {
-      return 'light'
+      return 'dark'
     }
   })
 

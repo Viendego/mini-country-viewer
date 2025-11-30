@@ -1,8 +1,9 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import SearchBar from './components/SearchBar'
 import CountryCard from './components/CountryCard'
 import countriesData from './data/countries.json'
 import './index.css'
+import DashboardV2 from './DashboardV2'
 
 export default function App() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -21,27 +22,72 @@ export default function App() {
     })
   }, [searchTerm])
 
+  const [showPreviewDashboard, setShowPreviewDashboard] = useState(false)
+  const [theme, setTheme] = useState(() => {
+    try {
+      return localStorage.getItem('theme') || 'light'
+    } catch (e) {
+      return 'light'
+    }
+  })
+
+  useEffect(() => {
+    const root = document.documentElement
+    if (theme === 'dark') root.classList.add('dark')
+    else root.classList.remove('dark')
+    try {
+      localStorage.setItem('theme', theme)
+    } catch (e) {
+      // ignore
+    }
+  }, [theme])
+
   return (
-    <div className="min-h-screen bg-gray-50 py-6 sm:py-8 px-4 sm:px-6">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-6 sm:py-8 px-4 sm:px-6">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="mb-8 sm:mb-10">
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">
             Countries
           </h1>
-          <p className="text-gray-600 text-sm sm:text-base">
+          <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">
             Explore countries, capitals, and populations!
           </p>
         </div>
 
         {/* Search Bar */}
-        <div className="mb-8 sm:mb-10">
-          <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+        <div className="mb-8 sm:mb-10 flex items-center justify-between">
+          <div className="flex-1 mr-4">
+            <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+          </div>
+          <div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))}
+                className="px-3 py-2 rounded-md bg-gray-100 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 hover:opacity-90"
+                aria-label="Toggle theme"
+              >
+                {theme === 'dark' ? 'Light' : 'Dark'}
+              </button>
+              <button
+                onClick={() => setShowPreviewDashboard((s) => !s)}
+                className="px-3 py-2 rounded-md bg-indigo-600 text-white text-sm hover:bg-indigo-700"
+              >
+                {showPreviewDashboard ? 'Close Preview' : 'Open Dashboard Preview'}
+              </button>
+            </div>
+          </div>
         </div>
+
+        {showPreviewDashboard && (
+          <div className="mb-8">
+            <DashboardV2 />
+          </div>
+        )}
 
         {/* Results Info */}
         {filteredCountries.length > 0 && (
-          <p className="text-gray-600 text-xs sm:text-sm mb-6">
+          <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm mb-6">
             Showing {filteredCountries.length} of {countriesData.length} countries
           </p>
         )}
@@ -84,10 +130,10 @@ export default function App() {
                 
               />
             </svg>
-            <p className="text-gray-600 text-base sm:text-lg font-medium mb-2">
+            <p className="text-gray-600 dark:text-gray-300 text-base sm:text-lg font-medium mb-2">
               No countries found
             </p>
-            <p className="text-gray-500 text-sm sm:text-base">
+            <p className="text-gray-500 dark:text-gray-300 text-sm sm:text-base">
               Try searching with different keywords
             </p>
           </div>

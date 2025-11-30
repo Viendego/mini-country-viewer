@@ -44,20 +44,20 @@ export default function SearchBar({ searchTerm, onSearchChange }) {
         onChange={(e) => onSearchChange(e.target.value)}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setTimeout(() => setIsFocused(false), 200)}
-        className="w-full pl-10 sm:pl-12 pr-4 py-3 sm:py-4 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base placeholder-gray-400"
+        className="w-full pl-10 sm:pl-12 pr-4 py-3 sm:py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base placeholder-gray-400 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100"
         aria-label="Search countries"
         title="Search by country name, region, or capital (e.g., 'Asia', 'Argentina', 'Tirana')"
       />
       {isFocused && !searchTerm && (
-        <div className="absolute top-full mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+        <div className="absolute top-full mt-2 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
           {suggestions.map((suggestion, idx) => (
             <div
               key={idx}
               onClick={() => handleSuggestionClick(suggestion.example)}
-              className="px-4 py-3 border-b border-gray-100 last:border-b-0 hover:bg-blue-50 cursor-pointer transition-colors"
+              className="px-4 py-3 border-b border-gray-100 dark:border-gray-700 last:border-b-0 hover:bg-blue-50 dark:hover:bg-gray-700 cursor-pointer transition-colors"
             >
-              <p className="text-sm font-medium text-gray-700">{suggestion.label}</p>
-              <p className="text-xs text-gray-500">{suggestion.displayExample}</p>
+              <p className="text-sm font-medium text-gray-700 dark:text-gray-100">{suggestion.label}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-300">{suggestion.displayExample}</p>
             </div>
           ))}
         </div>
